@@ -3,6 +3,7 @@ import { useState } from "react";
 export default (props) => {
   const [hide, resetHide] = useState(""); //for hiding navbars button and logos when clck on search button
   const [disp, resetDisp] = useState("d-none"); //for show and hiding form
+  const [searchInput, setsearchInput] = useState("");
   const showSearchbar = () => {
     resetHide("d-none");
     resetDisp("d-flex");
@@ -11,6 +12,11 @@ export default (props) => {
   const HideSearchBar = () => {
     resetHide("");
     resetDisp("d-none");
+  };
+
+  const ValidateSearchInput = (e) => {
+    setsearchInput(e.target.value);
+    if (e.target.value === "") HideSearchBar();
   };
   return (
     <>
@@ -51,10 +57,12 @@ export default (props) => {
                   type='search'
                   placeholder='Search'
                   className='p-0 m-0'
+                  onChange={ValidateSearchInput}
                   onFocus={(e) =>
                     (e.target.style.borderBottom = "0.5px solid gray")
                   }
                   style={{ border: "none", outline: "none" }}
+                  value={searchInput}
                 />
               </form>
             </div>

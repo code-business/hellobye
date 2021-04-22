@@ -1,8 +1,70 @@
 import { useState } from "react";
+
+const PopupDiv = (props) => {
+  return (
+    <>
+      <div
+        className={`options position-absolute ${props.popupVar}`}
+        style={{ width: "inherit" }}>
+        <nav
+          className='w-75 position-absolute  bg-dark'
+          style={{
+            top: "-15em",
+            left: "4em",
+            borderRadius: "0.25em",
+          }}>
+          <ul
+            className='m-0 p-0'
+            style={{
+              listStyleType: "none",
+              color: "white",
+            }}>
+            {Object.keys(props.data).map((key) => (
+              <li>
+                <a
+                  className='text-decoration-none text-light nav-link text-center'
+                  href={props.data[key]}>
+                  {key}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </div>
+      ;
+    </>
+  );
+};
+
 export default (props) => {
   const [HoverButtons, setHoverButtons] = useState("d-none");
-  const ShowBtns = () => setHoverButtons("");
-  const HideBtns = () => setHoverButtons("d-none");
+  const [toggleMsg_Watch_later, Reset_toggleMsg_Watch_later] = useState(
+    "d-none"
+  );
+  const [toggleMsg_addTo_queue, Reset_toggleMsg_addTo_queue] = useState(
+    "d-none"
+  );
+  const [RightEm, setRightEm] = useState("0.5em"); //for alignement of "add to queue" button on hover
+  const [popup, resetPopup] = useState("d-none"); // for 3 dots clicking
+
+  const toggleMSG_WL = () => {
+    Reset_toggleMsg_Watch_later(
+      toggleMsg_Watch_later === "d-none" ? "" : "d-none"
+    );
+    setRightEm(RightEm === "0.5em" ? "-4.4em" : "0.5em");
+  };
+
+  const toggleMSG_ATQ = () =>
+    Reset_toggleMsg_addTo_queue(
+      toggleMsg_addTo_queue === "d-none" ? "" : "d-none"
+    );
+
+  const togglePopup = (e) => {
+    e.preventDefault();
+    resetPopup(popup === "d-none" ? "" : "d-none");
+  };
+
+  //props
   // props.watchLink
   // props.channelLink
   // props.thumbNailLink
@@ -12,8 +74,8 @@ export default (props) => {
       <a
         href={props.watchLink}
         className='text-decoration-none text-dark'
-        onMouseEnter={ShowBtns}
-        onMouseLeave={HideBtns}>
+        onMouseEnter={() => setHoverButtons("")}
+        onMouseLeave={() => setHoverButtons("d-none")}>
         {/* video watch link */}
         <div className='video-card p-2'>
           <a href={props.watchLink} className='text-decoration-none text-dark'>
@@ -56,7 +118,9 @@ export default (props) => {
 
           {/* 3 dots link */}
           <a
-            href='three-dots'
+            tabIndex={12}
+            onBlur={togglePopup}
+            onClick={togglePopup}
             className={`text-decoration-none text-dark dots ${HoverButtons} float-right position-relative`}>
             <div>
               <svg
@@ -73,7 +137,13 @@ export default (props) => {
           {/* watch later link */}
           <a
             href='watch-later'
-            className={`text-decoration-none text-light watch-later-logo ${HoverButtons} position-relative float-right pt-0 pb-0`}>
+            className={`text-decoration-none text-light watch-later-logo ${HoverButtons} position-relative float-right pt-0 pb-0 row overflow-auto`}
+            onMouseEnter={toggleMSG_WL}
+            onMouseLeave={toggleMSG_WL}>
+            <div
+              className={`msg  text-light pl-1 pr-1 ${toggleMsg_Watch_later} m-0 float-left`}>
+              watch later
+            </div>
             <div>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
@@ -89,7 +159,14 @@ export default (props) => {
           {/* add to playlist link */}
           <a
             href='add-to-play-list'
-            className={`text-decoration-none text-light add-to-list-logo ${HoverButtons} position-relative pt-0 pb-0 float-right`}>
+            className={`text-decoration-none text-light add-to-list-logo ${HoverButtons} position-relative float-right pt-0 pb-0 row`}
+            style={{ right: RightEm }}
+            onMouseEnter={toggleMSG_ATQ}
+            onMouseLeave={toggleMSG_ATQ}>
+            <span
+              className={`msg  text-light pl-1 pr-1 ${toggleMsg_addTo_queue} m-0 float-left`}>
+              add to play list
+            </span>
             <div>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
@@ -105,6 +182,16 @@ export default (props) => {
               </svg>
             </div>
           </a>
+
+          <PopupDiv
+            popupVar={popup}
+            data={{
+              "Add to list": "add_to_list",
+              Share: "share",
+              "Watch later": "watch_later",
+              "Add to favorites": "add_to_favorites",
+            }}
+          />
         </div>
       </a>
     </>

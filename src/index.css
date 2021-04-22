@@ -97,17 +97,16 @@
   color: white;
   background: #000000d4;
   padding: 0.2em;
-  border-radius: 15%;
+  border-radius: 0.24em;
 }
 
 .watch-later-logo {
   top: -14.5em;
-  right: -0.5em;
+  right: 0.5em;
 }
 
 .add-to-list-logo {
   top: -12.6em;
-  right: -2em;
 }
 
 .video-body {
@@ -185,7 +184,7 @@
   }
 }
 
-@media only screen and (max-width: 817px) {
+@media only screen and (max-width: 856px) {
   .NAV_BAR .pc-form input[type="search"],
   .search-icon {
     display: none !important;
@@ -196,6 +195,18 @@
   }
   .NAV_BAR ul .search-icon-mobile {
     display: block;
+  }
+}
+
+@media only screen and (max-width: 544px) {
+  .video-card {
+    width: 100vw;
+  }
+  .video-card .video-duration {
+    right: -1.2em;
+  }
+  .dots {
+    display: block !important;
   }
 }
 
